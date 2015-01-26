@@ -4,5 +4,15 @@ Group Member:
 	Student UW NetId: 	gwang63
 
 
-Project Description:
+Project Requirement:
+
+In this part of the project, you will implement a File Manager for Heap Files that also provides a scan mechanism that will allow you to search a heap
+
+file for records that satisfy a search predicate called a filter. How are heap files different from the files that the DB layer of Minirel provides? The main
+
+difference is that the files at the DB layer are physical (a bunch of pages) and not logical. The HeapFile layer imposes a logical ordering on the pages
+
+(via a linked list).
+
+Details:
 	https://drive.google.com/file/d/0B3Q5eelh65LXOFVRb3AyWWMzSk0/view?usp=sharing
