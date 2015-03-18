@@ -1,0 +1,28 @@
+/*
+ * ut.6: tests load and print
+ */
+
+/* create some relations */
+create table soaps(soapid int, sname char(28), network char(4), rating real);
+create table stars(starid int, stname char(20), plays char(12), soapid int);
+
+/* load tuples from ../data/stars.data */
+load table soaps from ("../data/soaps.data");
+
+/* print out contents of soaps */
+print table soaps;
+
+/* build some indices */
+/* buildindex soaps(soapid);*/
+/* buildindex stars(stname);*/
+
+/* load tuples from ../data/stars.data */
+load table stars from ("../data/stars.data");
+
+/* print out stars */
+print table stars;
+
+help table soaps;
+help table stars;
+
+quit;

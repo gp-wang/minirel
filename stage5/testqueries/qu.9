@@ -1,0 +1,56 @@
+/*
+ * test 9 tests QU_Join with large relations
+ */
+
+/* create relations */
+create table rel500 (unique1 int, unique2 int, hundred1 int, hundred2 int, dummy char(84));
+load table rel500 from ("../data/rel500.data");
+
+create table rel1000 (unique1 int, unique2 int, hundred1 int, hundred2 int, dummy char(84));
+load table rel1000 from ("../data/rel1000.data");
+
+/* create indices */
+/*
+buildindex rel500(unique2);
+buildindex rel500(hundred2);
+buildindex rel1000(unique2);
+buildindex rel1000(hundred2);
+*/
+
+/* join queries */
+Select rel500.dummy, rel500.unique1, rel1000.dummy into temprel 
+from rel500,rel1000
+where rel500.unique1 = rel1000.unique1;
+help table temprel;
+destroy table temprel;
+
+Select rel500.dummy, rel500.unique2, rel1000.dummy into temprel 
+from rel500,rel1000
+where rel500.unique2 = rel1000.unique2;
+help table temprel;
+destroy table temprel;
+
+Select rel500.dummy, rel500.unique1, rel1000.dummy into temprel 
+from rel500,rel1000
+where rel500.unique1 = rel1000.unique2;
+help table temprel;
+destroy table temprel;
+
+Select rel500.dummy, rel500.unique2, rel1000.dummy into temprel
+from rel500,rel1000 
+where rel500.unique2 = rel1000.unique1;
+help table temprel;
+destroy table temprel;
+
+Select rel500.dummy, rel500.unique1, rel1000.dummy into temprel 
+from rel500, rel1000
+where rel500.unique1 = rel1000.hundred1;
+help table temprel;
+destroy table temprel;
+
+Select rel500.dummy, rel500.unique1, rel1000.dummy into temprel 
+from rel500,rel1000
+where rel500.unique1 = rel1000.hundred2;
+help table temprel;
+destroy table temprel;
+

@@ -1,0 +1,22 @@
+/*
+ * ut.3: tests create and help
+ */
+
+/* create a simple relation */
+create table easy (myattr char(24));
+
+/* list the directory to see if anything got created */
+!ls
+
+/* see if it shows up in the catalog */
+help table easy;
+
+/* create a larger relation */
+create table easier (one char(24), two int, three real, four char(100));
+
+/* same stuff */
+!ls
+help table easier;
+
+help;
+quit;

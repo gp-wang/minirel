@@ -1,0 +1,7 @@
+create table R (unique1 int);
+load table R from ("../data/unique1_10K_R.data");
+
+create table S (unique1 int);
+load table S from ("../data/unique1_10K_S.data");
+
+select (R.unique1, S.unique1) from R, S where R.unique1 = S.unique1;

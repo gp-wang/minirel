@@ -1,0 +1,161 @@
+#! /bin/csh -f
+
+# qutest: QU layer test script
+
+# This is the test script for the QU layer.  If you are using the
+# instructional Suns, then it shouldn't be necessary to make
+# any changes to this script.  If not, then read the descriptions of
+# DATADIR and TESTSDIR (below) to see if you need to change it (you
+# should only need to make changes to DATADIR and TESTSDIR).
+#
+
+
+#
+# DATADIR:  This is the directory where the data files are.  
+#
+
+set DATADIR = ./data
+
+
+#
+# TESTSDIR:  This is the directory where the files of test queries
+# are.  
+#
+
+set TESTSDIR = ./test
+
+
+#
+# Don't change this, unless you want to go and change all of the
+# queries in the test files.
+#
+
+set LOCALNAME = data
+
+
+#
+# The names of the 3 front-end utilities
+#
+
+set DBCREATE  = ./dbcreate
+set DBDESTROY = ./dbdestroy
+set MINIREL   = ./minirel
+
+
+#
+# Before doing anything else, we have to create a symbolic link to the
+# data directory if one doesn't already exist.  This is because the
+# test queries expect to find the data files in a directory called
+# `data'.
+#
+
+if ( -d data ) goto DATAOK
+
+echo You need to have a directory called \`$LOCALNAME\' in order \
+	to run this script.
+echo -n "Shall I create one?  (y or n) "
+
+if ( $< == n ) then
+	echo $0 aborted
+	exit 1
+endif
+
+echo ''
+
+if ( ! -d $DATADIR ) then
+	echo I can not find a directory called $DATADIR. \
+		Please check the value of the DATADIR variable \
+		in the $0 script and try again. | fmt
+	exit 1
+endif
+
+if ( ! -r $DATADIR/soaps.data ) then
+	echo I can not find the necessary data files in $DATADIR. \
+		Please check the value of the DATADIR variable in \
+		the $0 script and try again. | fmt
+	exit 1
+endif
+
+ln -s $DATADIR $LOCALNAME >& /dev/null
+
+if ( $status == 0 ) goto DATAOK
+
+if ( ! -w . ) then
+	echo You do not have permission to create files in this \
+		'directory.  Please fix the permissions and rerun \
+		this script. | fmt
+	exit 1
+endif
+
+echo I can not make the directory.  If you have a file called \
+	\`$LOCALNAME\' in this directory, remove it and run this \
+	script again.  If not, please send mail to cs564. | fmt
+exit 1
+
+
+DATAOK:
+
+
+#
+# Now that the data directory is set up, make sure that the TESTSDIR
+# variable is set to something reasonable
+#
+
+if ( ! -d $TESTSDIR ) then
+	echo The TESTSDIR variable is currently set to \
+		$TESTSDIR, which is not a valid directory. \
+		Please read the instructions at the top of the \
+		$0 script, set 'TESTDIR' correctly, and rerun the \
+		script. | fmt
+	exit 1
+endif
+
+if ( `ls $TESTSDIR/qu.[0-9]* | wc -l` == 0 ) then
+	echo I can not find the QU test files in $TESTSDIR. \
+		Please read the instructions at the beginning \
+		of the $0 script, set TESTDIR correctly, and rerun \
+		the script | fmt
+	exit 1
+endif
+
+
+#
+# This is the name of the data base we will be using for the tests.
+#
+
+set TESTDB = testdb
+
+
+#
+# Run the requested tests
+#
+
+
+#
+# if no args given, then run all tests
+#
+
+if ( $#argv == 0 ) then
+	foreach queryfile ( `ls $TESTSDIR/qu.*` )
+		echo running test '#' $queryfile:e '****************'
+		$DBCREATE  $TESTDB
+		$MINIREL   $TESTDB < $queryfile
+		echo "y" | $DBDESTROY $TESTDB
+	end
+
+#
+# otherwise, run just the specified tests
+#
+
+else
+	foreach testnum ( $* )
+		if ( -r $TESTSDIR/qu.$testnum ) then
+			echo running test '#' $testnum '****************'
+			$DBCREATE  $TESTDB
+			$MINIREL   $TESTDB < $TESTSDIR/qu.$testnum
+			echo "y" | $DBDESTROY $TESTDB
+		else
+			echo I can not find a test number $testnum.
+		endif
+	end
+endif

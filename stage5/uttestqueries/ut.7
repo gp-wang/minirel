@@ -1,0 +1,52 @@
+/*
+ * ut.7: tests error checking
+ */
+
+/* do you check for duplicated attribute names? */
+/* following should fail */
+create table ned (ted char(24), ted int);
+
+/* do you check for duplicated relation names? */
+create table ned (ted char(24), jed int);	/* <-- this should succeed */
+create table ned (ted char(24), jed int);
+
+/* do you check for relations that are too large? */
+create table red(ted char(254), jed char(254), red char(254), ed char(254), fred char(254), ned char(254), aed char(254), bed char(254), ced char(254), ded char(254), eed char(254), fed char(254), ged char(254), hed char(254), ied char(254), ked char(254), led char(254)); 
+
+/* can you destroy table nonexistent relations? */
+destroy table jed;
+
+/* can you destroy table a relation more than once? */
+destroy table ned;	/* <-- this should succeed */
+destroy table ned;
+
+/* recreate table ned (this should succeed) */
+create table ned (ted char(24), jed int);
+
+/* can you create table indices on nonexistent attributes? */
+/* buildindex ned(ed);*/
+
+/* can you build indices on attributes that are already indexed? */
+/* buildindex ned(ted);*/		/* <-- this should succeed */
+/* buildindex ned(ted);*/
+
+/* can you print relations that don't exist */
+print table jed;
+
+/* can you load from nonexistent files? */
+load table ned from ("no-such-file");
+
+/* can you load into nonexistent relations? */
+load table ed from ("../data/soaps.data");
+
+/* can you get help on nonexistent relations? */
+help table jed;
+
+/* the rest should all succeed */
+
+/* what sort of condition are things left in? */
+help;
+help table ned;
+!ls
+
+quit;

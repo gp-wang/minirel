@@ -1,0 +1,23 @@
+/*
+ * ut.4: tests destroy
+ */
+
+/* create some relations */
+create table soaps(soapid int, sname char(28), network char(4), rating real);
+create table stars(starid int, stname char(20), plays char(12), soapid int);
+
+/* make sure they made it into the catalog */
+help table soaps;
+help table stars;
+
+/* destroy the relations */
+destroy table stars;
+help;
+
+destroy table soaps;
+help;
+
+/* make sure the files got removed */
+!ls
+
+quit;

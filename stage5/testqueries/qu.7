@@ -1,0 +1,41 @@
+/*
+ * test 7 tests QU_Delete without indices
+ */
+
+
+/* create relations */
+create table soaps(soapid int, name char(28), network char(4), rating real);
+load table soaps from ("../data/soaps.data");
+
+create table stars(starid int, real_name char(20), plays char(12), soapid int);
+load table stars from ("../data/stars.data");
+
+print table stars;
+
+/* Lisa is being written out of One Life to Live */
+delete from stars where stars.plays = "Lisa";
+
+/* Eugene Anthony is leaving All My Children */
+delete from stars where stars.real_name = "Anthony, Eugene";
+
+print table stars;
+
+/*
+ * General Hospital is doing poorly in the ratings this week; 
+ * fire everyone 
+ */
+delete from stars where stars.soapid = 1;
+
+print table stars;
+
+/* fire everone, no matter which soap they are from */
+delete from stars;
+
+print table stars;
+
+/*
+ * ABC decides to cancel all soaps
+ */
+delete from soaps where soaps.network < "NBC";
+
+print table soaps;

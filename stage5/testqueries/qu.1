@@ -1,0 +1,49 @@
+/*
+ * test 1 tests QU_Select without indices
+ */
+
+
+/* create relations */
+create table soaps(soapid int, name char(28), network char(4), rating real);
+load table soaps from ("../data/soaps.data");
+
+create table stars(starid int, real_name char(20), plays char(12), soapid int);
+load table stars from ("../data/stars.data");
+
+/*
+ * various selections without indices
+ */
+
+/* simple selection (should be the same as just printing the relation) */
+select soapid, name, network, rating from soaps;
+print table soaps;
+
+/* names, ratings, and networks of soaps on NBC */
+select name, rating, network from soaps where network = "NBC";
+
+/* print character name, real name, and ids of stars with id's < 12 */
+select plays, real_name, starid from stars where starid < 12;
+
+/* ratings, networks, and names of soaps with ratings of 5 or greater */
+select rating, network, name from soaps where rating >= 5.0;
+
+/* selection that doesn't find anything */
+select real_name, starid from stars where starid > 567;
+
+/* select into a non-existent relation */
+select network, soapid, name into ned
+from soaps
+where network = "CBS";
+print table ned;
+
+/* select into a existing relation */
+select network, soapid, name into ned
+from soaps
+where network = "NBC";
+print table ned;
+
+/* select into a relation with strings of different sizes */
+create table ted (plays char(12), soapid int);
+select plays, soapid into ted from stars where plays < "L";
+print table ted;
+

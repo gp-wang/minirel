@@ -1,0 +1,20 @@
+create table soaps (soapid  int, network char(4));
+
+create table stars (starid  int, network char(4));
+
+insert into soaps (soapid,network) values (5, "NBC");
+
+insert into soaps (soapid,network) values (5, "ABC");
+
+insert into stars (starid,network) values (5, "NBC");
+
+insert into stars (starid,network) values (5, "ABC");
+
+insert into stars(starid, network) values (5, "CNN");
+
+select sp.soapid, sp.network, st.starid, st.network from soaps sp, stars st where sp.soapid = st.starid;
+
+
+
+
+

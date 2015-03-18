@@ -1,0 +1,19 @@
+/*
+ * ut.5: tests buildindex
+ */
+
+/* create some relations */
+create table soaps(soapid int, sname char(28), network char(4), rating real);
+
+create table stars(starid int, stname char(20), plays char(12), soapid int);
+
+/* build some indices */
+/* buildindex soaps(network);*/
+help table soaps;
+
+/* buildindex stars(stname);*/
+help table stars;
+
+help;
+
+quit;

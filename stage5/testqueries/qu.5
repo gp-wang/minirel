@@ -1,0 +1,42 @@
+/*
+ * test 5 tests QU_Insert without indices
+ */
+
+
+/* create relations */
+create table soaps(soapid int, name char(28), network char(4), rating real);
+load table soaps from ("../data/soaps.data");
+
+create table stars(starid int, real_name char(20), plays char(12), soapid int);
+load table stars from ("../data/stars.data");
+
+/*
+ * luckily, Soap Operas Digest has a section called `Comings and Goings'
+ * which makes the writing of the insert and delete tests much simpler
+ */
+
+print table stars;
+
+/*
+ * insert with attributes in order:
+ * Parker Posey is going to be playing Tess on As the World Turns
+ */
+insert into stars (starid, real_name, plays, soapid) values (100, "Posey, Parker",
+	      "Tess", 6);
+
+/*
+ * insert with attributes out of order:
+ * Laura Bonarrigo will be joining the cast of One Life to Live, in the
+ * role of Cassie
+ */
+insert into stars (real_name,soapid, starid, plays) values ("Bonarrigo, Laura", 3,
+	      101, "Cassie");
+
+print table stars;
+
+/*
+insert into stars (starid,soapid) values (123,  33);
+
+print table stars;
+
+*/

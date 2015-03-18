@@ -1,0 +1,16 @@
+create table dummy(s int,d char(20),f char(12),g int);
+
+/* buildindex table dummy(g);*/
+
+help table dummy;
+
+load table dummy from ("../data/stars.data");
+
+print table dummy;
+
+help table dummy;
+
+quit;
+
+/*testindex*/
+

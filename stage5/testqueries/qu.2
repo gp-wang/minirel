@@ -1,0 +1,24 @@
+/*
+ * test 2 tests QU_Select with indices
+ */
+
+
+/* create relations */
+create table soaps(soapid int, name char(28), network char(4), rating real);
+load table soaps from ("../data/soaps.data");
+
+create table stars(starid int, real_name char(20), plays char(12), soapid int);
+load table stars from ("../data/stars.data");
+
+/*
+ * some selections involving indices
+ */
+
+/* the stars of "Days of Our Lives"*/
+select real_name, plays from stars where soapid = 0;
+
+/* names of soaps on CBS (uses secondary index) */
+select name, network from soaps where network = "CBS";
+
+/* index selection that doesn't find anything */
+select name, rating from soaps where rating = 678.90;

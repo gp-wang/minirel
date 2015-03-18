@@ -1,0 +1,50 @@
+/*
+ * test 8 tests QU_Delete with indices
+ */
+
+
+/* create the relations and indices */
+create table soaps(soapid int, name char(28), network char(4), rating real);
+/*
+buildindex soaps(name);
+buildindex soaps(network);
+*/
+load table soaps from ("../data/soaps.data");
+
+create table stars(starid int, real_name char(20), plays char(12), soapid int);
+/*
+buildindex stars(real_name);
+buildindex stars(soapid);
+*/
+load table stars from ("../data/stars.data");
+
+print table stars;
+
+/* John Novak is being written out of Santa Barbara */
+delete from stars where stars.real_name = "Novak, John";
+
+print table stars;
+
+/* delete everyone on The Young and the Restless */
+delete from stars where stars.soapid = 5;
+
+select starid, real_name, plays, soapid from stars where soapid = 5;
+
+print table stars;
+
+print table soaps;
+
+/* get rid of all soaps that aren't doing well in the ratings */
+delete from soaps where soaps.rating < 6.0;
+
+
+select soapid from soaps where rating = 6.0;
+
+print table soaps;
+
+/* cancel all the soaps and fire all of the stars */
+delete from soaps;
+delete from stars;
+
+print table soaps;
+print table stars;

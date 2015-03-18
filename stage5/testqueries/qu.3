@@ -1,0 +1,34 @@
+/*
+ * test 3 tests QU_Join
+ */
+
+
+/* create relations */
+create table soaps(soapid int, name char(28), network char(4), rating real);
+load table soaps from ("../data/soaps.data");
+
+create table stars(starid int, real_name char(20), plays char(12), soapid int);
+load table stars from ("../data/stars.data");
+
+/* print names of stars and the soaps they star in */
+select stars.plays, soaps.name from stars, soaps where stars.soapid = soaps.soapid;
+
+/* another query */
+select soaps.name, stars.starid from stars, soaps  where soaps.name = stars.real_name;
+
+/*
+ * a multi-step query
+ */
+
+/* names and id's of NBC stars with id's >= 9 */
+select real_name, starid, soapid into temp1
+from stars
+where starid >= 9;
+
+select temp1.real_name, temp1.starid, soaps.network into temp2 
+from temp1,soaps
+where temp1.soapid = soaps.soapid;
+
+select real_name, starid, network
+from temp2
+where network = "NBC";

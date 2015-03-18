@@ -1,0 +1,41 @@
+/*
+ * test 6 tests QU_Insert with indices
+ */
+
+create table soaps(soapid int, name char(28), network char(4), rating real);
+/*
+buildindex soaps(name);
+buildindex soaps(network);
+*/
+load table soaps from ("../data/soaps.data");
+
+create table stars(starid int, real_name char(20), plays char(12), soapid int);
+/*
+buildindex stars(plays);
+buildindex stars(soapid);
+*/
+load table stars from ("../data/stars.data");
+
+/*
+ * insert some new soaps
+ */
+
+print table soaps;
+
+/*
+ * insert with attributes in order:
+ * Dallas, on CBS
+ */
+
+insert into soaps (soapid,name,network,rating) values (100, "Dallas", "CBS", 8.67);
+
+/*
+ * insert with attributes out of order:
+ * Loving, on ABC
+ */
+
+insert into soaps (network,rating,name,soapid) values ("ABC", 3.35, "Loving", 101);
+
+print table soaps;
+
+select soaps.network, soaps.rating from soaps where soaps.soapid = 101;

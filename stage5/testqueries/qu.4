@@ -1,0 +1,38 @@
+/*
+ * test 4 has more QU_Join stuff
+ */
+
+
+/* create the relations and indices */
+create table soaps(soapid int, name char(28), network char(4), rating real);
+/*
+buildindex soaps(name);
+buildindex soaps(network);
+*/
+load table soaps from ("../data/soaps.data");
+
+create table stars(starid int, real_name char(20), plays char(12), soapid int);
+/*
+buildindex stars(plays);
+buildindex stars(soapid);
+*/
+load table stars from ("../data/stars.data");
+
+
+/*
+ * more joins
+ */
+
+/* print names of stars and the soaps they star in */
+select stars.plays, soaps.name, soaps.network from stars, soaps where stars.soapid = soaps.soapid;
+
+/* names and id's of stars of soaps having rating < 4.6 with starid's < 7 */
+select real_name, starid, soapid into temp1 
+from stars
+where starid < 7;
+
+select temp1.real_name, temp1.starid, soaps.rating into temp2 
+from temp1,soaps
+where temp1.soapid = soaps.soapid;
+
+select real_name, starid, rating from temp2 where rating < 4.6;
