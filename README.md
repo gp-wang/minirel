@@ -1,7 +1,7 @@
 cs564
 =====
 
-Database Management Systems  
+Database Management Systems, University of Wisconsin–Madison    
 
 These are the different stages of my course project of implementing an database management system called minirel.  
 
